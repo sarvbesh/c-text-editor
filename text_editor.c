@@ -22,10 +22,8 @@ void disableRawMode() {
 
 void enableRawMode(){
 
-    if (tcsetattr(STDIN_FILENO, &orig_termios) == -1)
-    die("tcsetattr");
-    
-    tcgetattr(STDIN_FILENO, &orig_termios);
+    if (tgsetattr(STDIN_FILENO, &orig_termios) == -1)
+    die("tcgetattr");
 
     atexit(disableRawMode);
 
