@@ -50,7 +50,7 @@ struct editorConfig {
   int numrows;
   erow *row;
   char *filename;
-  hcar statusmgs[80];
+  char statusmsg[80];
   time_t statusmsg_time;
   struct termios orig_termios;
 };
