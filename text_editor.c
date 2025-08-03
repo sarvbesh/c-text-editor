@@ -76,7 +76,7 @@ typedef struct erow {
 
 struct editorConfig {
   int cx, cy;
-  int cx;
+  int rx;
   int rowoff;
   int coloff;
   int screenrows;
@@ -135,7 +135,7 @@ void disableRawMode() {
 }
 
 void enableRawMode(){
-    if (tgsetattr(STDIN_FILENO, &E.orig_termios) == -1)
+    if (tcgetattr(STDIN_FILENO, &E.orig_termios) == -1)
     die("tcgetattr");
     atexit(disableRawMode);
     struct termios raw = E.orig_termios;
@@ -145,7 +145,7 @@ void enableRawMode(){
     raw.c_lflag &= ~(ECHO | ICANON | IEXTEN | ISIG);
     raw.c_cc[VMIN] = 0;
     raw.c_cc[VTIME] = 1;
-    if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw) == -1) die("tcsetattr");
+    if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw) == -1) die("tcgetattr");
 }
 
 int editorReadKey() {
@@ -944,8 +944,8 @@ void editorProcessKeypress() {
 
 void initEditor() {
   E.cx = 0;
-  E.xy = 0;
-  E.cx = 0;
+  E.cy = 0;
+  E.rx= 0;
   E.rowoff = 0;
   E.coloff = 0;
   E.numrows = 0;
